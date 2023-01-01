@@ -344,7 +344,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     } else if (key === 'Escape' && popupOpen) {
       e.preventDefault()
       toggle.close()
-    } else if (key === 'Enter' && popupOpen) {
+    } else if (key === 'Enter' && popupOpen && list.getFocused()) {
       e.preventDefault()
       select(list.getFocused()!)
     } else if (key === 'ArrowDown') {
