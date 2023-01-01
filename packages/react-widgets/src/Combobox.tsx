@@ -334,21 +334,22 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       list.focus(el)
     }
 
-    if (key === 'End' && currentOpen && !shiftKey) {
+    let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
+    if (key === 'End' && popupOpen && !shiftKey) {
       e.preventDefault()
       setFocused(list.last())
-    } else if (key === 'Home' && currentOpen && !shiftKey) {
+    } else if (key === 'Home' && popupOpen && !shiftKey) {
       e.preventDefault()
       setFocused(list.first())
-    } else if (key === 'Escape' && currentOpen) {
+    } else if (key === 'Escape' && popupOpen) {
       e.preventDefault()
       toggle.close()
-    } else if (key === 'Enter' && currentOpen) {
+    } else if (key === 'Enter' && popupOpen) {
       e.preventDefault()
       select(list.getFocused()!)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
-      if (currentOpen) {
+      if (popupOpen) {
         setFocused(list.next())
       } else {
         return toggle.open()
@@ -357,7 +358,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       e.preventDefault()
       if (altKey) return toggle.close()
 
-      if (currentOpen) {
+      if (popupOpen) {
         setFocused(list.prev())
       }
     }
