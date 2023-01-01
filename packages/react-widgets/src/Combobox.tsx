@@ -218,7 +218,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<ListHandle>(null)
 
-  const [suggestion, setSuggestion] = useState<TDataItem | null>(null)
   const shouldFilter = useRef(false)
 
   const inputId = useInstanceId(id, '_input')
@@ -259,7 +258,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
         if (!focused) {
           shouldFilter.current = false
           toggle.close()
-          setSuggestion(null)
           list.focus(undefined)
         } else {
           focus({ preventScroll: true })
@@ -291,7 +289,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     toggle.close()
     shouldFilter.current = false
 
-    setSuggestion(null)
     notify(onSelect, [data, { originalEvent }])
     change(data, originalEvent, true)
     focus({ preventScroll: true })
@@ -311,8 +308,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       : -1
 
     shouldFilter.current = true
-
-    setSuggestion(null)
 
     const nextValue = idx === -1 ? event.target.value : rawData[idx]
 
@@ -336,7 +331,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
     const setFocused = (el?: HTMLElement) => {
       if (!el) return
-      setSuggestion(list.toDataItem(el)!)
       list.focus(el)
     }
 
@@ -348,7 +342,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       setFocused(list.first())
     } else if (key === 'Escape' && currentOpen) {
       e.preventDefault()
-      setSuggestion(null)
       toggle.close()
     } else if (key === 'Enter' && currentOpen) {
       e.preventDefault()
@@ -401,7 +394,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   let shouldRenderPopup = useFirstFocusedRender(focused, currentOpen!)
 
   let valueItem = accessors.findOrSelf(data, currentValue)
-  let inputValue = accessors.text(suggestion || valueItem)
+  let inputValue = accessors.text(valueItem)
 
   let completeType = filter ? ('list' as const) : ('none' as const)
 
